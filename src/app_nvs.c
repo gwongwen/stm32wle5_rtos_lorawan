@@ -10,7 +10,7 @@
 int app_nvs_init(struct nvs_fs *fs)
 {
 	struct flash_pages_info info;
-	int ret = 0;
+	int ret;
 
 	fs->flash_device = NVS_PARTITION_DEVICE;
 	if (!device_is_ready(fs->flash_device)) {
@@ -27,12 +27,11 @@ int app_nvs_init(struct nvs_fs *fs)
 
 	fs->sector_size = info.size;
 	if (!fs->sector_size || fs->sector_size % info.size) {
-		printk("invalid sector size");
+		printk("invalid sector size\n");
 		return -EINVAL;
 	}
 
-	fs->sector_count = 3U;
-
+	fs->sector_count = 2U;
 	ret = nvs_mount(fs);
 	if (ret) {
 		printk("flash init failed. error: %d\n", ret);
@@ -52,11 +51,11 @@ int app_nvs_init(struct nvs_fs *fs)
 
 int app_nvs_init_param(struct nvs_fs *fs, uint16_t id, void *data)
 {
-	int ret = 0;
+	int ret;
 
 	ret = nvs_read(fs, id, data, sizeof(data));
 	if (ret > 0) {
-		printk("ID: %d, address: %s", id, data);
+		printk("ID: %d, address: %s\n", id, data);
 	} else {
 		printk("no address found, adding %s at id %d\n", data, id);
 		(void)nvs_write(fs, id, data, sizeof(data));	

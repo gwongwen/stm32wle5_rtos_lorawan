@@ -10,9 +10,8 @@
 
 #include <zephyr/device.h>
 #include <zephyr/kernel.h>
-#include <zephyr/fs/nvs.h>
 
-#include <zephyr/random/rand32.h>
+#include <zephyr/fs/nvs.h>
 #include <zephyr/drivers/flash.h>
 #include <zephyr/storage/flash_map.h>
 
@@ -20,7 +19,7 @@
 #define NVS_PARTITION_DEVICE	    FIXED_PARTITION_DEVICE(NVS_PARTITION)
 #define NVS_PARTITION_OFFSET	    FIXED_PARTITION_OFFSET(NVS_PARTITION)
 #define NVS_DEVNONCE_ID             0
-#define NVS_CLEAR
+//#define NVS_CLEAR
 
 int app_nvs_init(struct nvs_fs *fs);
 int app_nvs_init_param(struct nvs_fs *fs, uint16_t id, void *data);
