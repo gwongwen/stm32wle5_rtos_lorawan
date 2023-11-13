@@ -2,9 +2,13 @@
 
 ## Overview
 This simple application allows us to demonstrate and validate the LoRaWAN subsystem Zephyr.
-This application just sends a string (Hello World!) to The Things Network (TTN) community (LoRaWAN network server).
+This application connects to The Things Network (TTN) community (LoRaWAN network server) and sends a string (Hello World!).
 
-We have to create an application and add end device to the TTN network to see if the code is well. The parameters of the end device are defined in app_lorawan header file.
+LoRaWAN Device EUI, Join EUI and Application Key must be entered into the app_lorawan.h header file prior to compiling.
+
+We have to create an application and add end device to the TTN network to see if the code is well. The parameters of the end device are defined in app_lorawan.h header file.
+
+The code stores the DevNonce in NVS (Non-volatile Storage) as per LoRaWAN 1.0.4 Specifications.
 
 The LoRaWAN network-layer setting are:
 
@@ -15,7 +19,7 @@ The LoRaWAN network-layer setting are:
 
 **First Board used** : Cicecrone board by Move-X
 
-**Second Board used** : Original MAMWLExx board, powered by battery/solar panel. (see 6sens_omnitilt repository/hardware part, for more information)
+**Second Board used** : Original MAMWLExx board, powered by battery/solar panel. (see 6sens_omnitilt repository/hardware part, for more information).
 
 ## Building and Running
 Before building the sample, make sure to select the correct region in the prj.conf file.

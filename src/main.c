@@ -58,7 +58,7 @@ int main(void)
 	app_nvs_init(&fs);
 	app_nvs_init_param(&fs, NVS_DEVNONCE_ID, &dev_nonce);
 	
-	printk("starting Loarawan node.\n");
+	printk("starting Loarawan node\n");
 	lora_dev = DEVICE_DT_GET(DT_ALIAS(lora0));
 	if (!device_is_ready(lora_dev)) {
 		printk("%s: device not ready\n", lora_dev->name);
@@ -68,7 +68,7 @@ int main(void)
 	printk("starting Lorawan stack\n");
 	ret = lorawan_start();
 	if (ret < 0) {
-		printk("lorawan_start failed: %d\n", ret);
+		printk("lorawan_start failed. error: %d\n", ret);
 		return 0;
 	}
 
@@ -100,7 +100,7 @@ int main(void)
 			if ((ret =-ETIMEDOUT)) {
 				printk("timed-out waiting for response.\n");
 			} else {
-				printk("join failed (%d)\n", ret);
+				printk("join failed. error: %d\n", ret);
 			}
 		} else {
 			printk("join successful.\n");
