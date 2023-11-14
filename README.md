@@ -13,7 +13,7 @@ The code stores the DevNonce in NVS (Non-volatile Storage) as per LoRaWAN 1.0.4 
 The LoRaWAN network-layer setting are:
 
     - frequency plan                    Europe 863-870 MHz (SF for RX2)
-    - LoRaWAN version                   LoRWAN speccification 1.0.3
+    - LoRaWAN version                   LoRWAN speccification 1.0.4
     - regional parameters version       RP001 rRegional Parameters 1.0.3 revision A
     - LoRaWAN class                     Class A
 
