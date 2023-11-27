@@ -91,7 +91,9 @@ int main(void)
 	join_cfg.otaa.join_eui = join_eui;
 	join_cfg.otaa.app_key = app_key;
 	join_cfg.otaa.nwk_key = app_key;
-	join_cfg.otaa.dev_nonce = dev_nonce;
+
+	/* uncomment if we use Lorawan specification 1.0.4 and up */
+/*	join_cfg.otaa.dev_nonce = dev_nonce;
 
 	do {
 		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
@@ -122,10 +124,9 @@ int main(void)
 			k_sleep(K_MSEC(5000));
 		}
 	} while (ret != 0);
-
+*/ret = lorawan_join(&join_cfg);
 #ifdef CONFIG_LORAWAN_APP_CLOCK_SYNC
 	lorawan_clock_sync_run();
-#endif
 	
 	ret = lorawan_clock_sync_get(&gps_time);
 		if (ret != 0) { 
@@ -143,7 +144,7 @@ int main(void)
 			strftime(buf, sizeof(buf), "%A %B %d %Y %I:%M:%S %p %Z", &timeinfo);
 			printk("GPS time (seconds since Jan 6th 1980) = %"PRIu32", UTC time: %s\n", gps_time, buf);
 		}
-	
+#endif	
 	printk("sending data...\n");
 	for (itr = 0; itr < 10 ; itr++) {
 		ret = lorawan_send(2, data_tx, sizeof(data_tx), LORAWAN_MSG_CONFIRMED);
