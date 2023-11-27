@@ -8,13 +8,13 @@ LoRaWAN Device EUI, Join EUI and Application Key must be entered into the app_lo
 
 We have to create an application and add end device to the TTN network to see if the code is well. The parameters of the end device are defined in app_lorawan.h header file.
 
-If specification 1.0.4 of Lorawan is used, the code stores the DevNonce in NVS (Non-volatile Storage) as per LoRaWAN 1.0.4 Specifications.
+If specification 1.0.4 or 1.1.1 of Lorawan network-layer is used, the code stores the DevNonce in NVS (Non-volatile Storage) as per LoRaWAN 1.0.4 Specifications.
 
 The LoRaWAN network-layer setting are:
 
     - frequency plan                    Europe 863-870 MHz (SF for RX2)
-    - LoRaWAN version                   LoRWAN speccification 1.0.1
-    - regional parameters version       TS0001 rRegional Parameters 1.0.1
+    - LoRaWAN version                   LoRWAN speccification 1.0.4
+    - regional parameters version       RP002 regional parameters 1.0.4
     - LoRaWAN class                     Class A
 
 **First Board used** : Cicecrone board by Move-X

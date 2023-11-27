@@ -37,7 +37,7 @@ int main(void)
 	static struct nvs_fs fs;
 	
 	struct lorawan_join_config join_cfg;
-	uint16_t dev_nonce = 0;
+	uint16_t dev_nonce = 0u;
 	uint32_t random = 0;
 
 	uint8_t dev_eui[] = LORAWAN_DEV_EUI;
@@ -91,9 +91,7 @@ int main(void)
 	join_cfg.otaa.join_eui = join_eui;
 	join_cfg.otaa.app_key = app_key;
 	join_cfg.otaa.nwk_key = app_key;
-
-	/* uncomment if we use Lorawan specification 1.0.4 and up */
-/*	join_cfg.otaa.dev_nonce = dev_nonce;
+	join_cfg.otaa.dev_nonce = dev_nonce;
 
 	do {
 		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
@@ -124,10 +122,9 @@ int main(void)
 			k_sleep(K_MSEC(5000));
 		}
 	} while (ret != 0);
-*/ret = lorawan_join(&join_cfg);
+
 #ifdef CONFIG_LORAWAN_APP_CLOCK_SYNC
 	lorawan_clock_sync_run();
-	
 	ret = lorawan_clock_sync_get(&gps_time);
 		if (ret != 0) { 
 			printk("lorawan_clock_sync_get returned %d\n", ret);
@@ -162,6 +159,5 @@ int main(void)
 		printk("data sent!\n");
 		k_sleep(DELAY);
 	}
-
 	return 0;
 }
