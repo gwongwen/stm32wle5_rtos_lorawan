@@ -19,6 +19,11 @@ char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};
 // downlink callback
 static void dl_callback(uint8_t port, bool data_pending, int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data)
 {
+	printk("downlink data received: ");
+    for(int8_t i=0; i < len; i++) {
+		printk("%02X ", data[i]);
+	}
+    printk("\n");
 	printk("port: %d, pending: %d, RSSI: %ddB, SNR: %dBm\n", port, data_pending, rssi, snr);
 }
 
@@ -86,22 +91,34 @@ int main(void)
 	//random = sys_rand32_get();
 	//dev_nonce = random & 0x0000FFFF;
 
-	//join_cfg.mode = LORAWAN_ACT_OTAA;
-	join_cfg.mode = LORAWAN_CLASS_A;
+#ifdef OTAA
+	join_cfg.mode = LORAWAN_ACT_OTAA;
 	join_cfg.dev_eui = dev_eui;
 	join_cfg.otaa.join_eui = join_eui;
 	join_cfg.otaa.app_key = app_key;
 	join_cfg.otaa.nwk_key = app_key;
 	join_cfg.otaa.dev_nonce = dev_nonce;
+#endif
 
-	do {
-		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
+#ifdef ABP
+    join_cfg.mode = LORAWAN_ACT_ABP;
+    join_cfg.dev_eui = dev_addr;
+    join_cfg.abp.dev_addr = dev_addr;
+    join_cfg.abp.app_skey = app_skey;
+    join_cfg.abp.nwk_skey = nwk_skey;
+    join_cfg.abp.app_eui  = app_eui;
+#endif
+
+
+#ifdef OTAA
+
+	do {		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
 		ret = lorawan_join(&join_cfg);
 		if (ret < 0) {
 			if ((ret =-ETIMEDOUT)) {
 				printk("timed-out waiting for response.\n");
 			} else {
-				printk("join failed. error: %d\n", ret);
+				printk("join network failed. error: %d\n", ret);
 			}
 		} else {
 			printk("join successful.\n");
@@ -122,7 +139,18 @@ int main(void)
 			// If failed, wait before re-trying.
 			k_sleep(K_MSEC(5000));
 		}
-	} while (ret != 0);
+	} while (ret != 0);	
+#endif
+
+#ifdef ABP
+	do {
+		ret = lorawan_join(&join_cfg);
+		if (ret < 0) {
+			printk("join network failed. error: %d\n", ret);
+			k_sleep(K_MSEC(5000));
+		}
+	} while (ret != 0)	;
+#endif
 
 #ifdef CONFIG_LORAWAN_APP_CLOCK_SYNC
 	lorawan_clock_sync_run();
@@ -142,7 +170,8 @@ int main(void)
 			strftime(buf, sizeof(buf), "%A %B %d %Y %I:%M:%S %p %Z", &timeinfo);
 			printk("GPS time (seconds since Jan 6th 1980) = %"PRIu32", UTC time: %s\n", gps_time, buf);
 		}
-#endif	
+#endif
+
 	printk("sending data...\n");
 	for (itr = 0; itr < 10 ; itr++) {
 		ret = lorawan_send(2, data_tx, sizeof(data_tx), LORAWAN_MSG_CONFIRMED);
