@@ -11,8 +11,9 @@
 #include "app_lorawan.h"
 #include "app_nvs.h"
 
-#define DELAY K_MSEC(30000)
 #define MAX_DATA_LEN 	10
+#define OTAA
+#define DELAY K_MSEC(5000)
 
 char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};
 
@@ -44,11 +45,11 @@ int main(void)
 	struct lorawan_join_config join_cfg;
 	uint16_t dev_nonce = 0u;
 	uint32_t random = 0;
-	
+
 #ifdef OTAA
-	uint8_t dev_eui[] = LORAWAN_DEV_EUI;
-	uint8_t join_eui[] = LORAWAN_JOIN_EUI;
-	uint8_t app_key[] = LORAWAN_APP_KEY;
+	uint8_t dev_eui[] 	= LORAWAN_DEV_EUI;
+	uint8_t join_eui[]	= LORAWAN_JOIN_EUI;
+	uint8_t app_key[]	= LORAWAN_APP_KEY;
 #endif
 
 #ifdef ABP
@@ -120,8 +121,8 @@ int main(void)
 
 
 #ifdef OTAA
-
-	do {		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
+	do {
+		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
 		ret = lorawan_join(&join_cfg);
 		if (ret < 0) {
 			if ((ret =-ETIMEDOUT)) {
@@ -130,7 +131,7 @@ int main(void)
 				printk("join network failed. error: %d\n", ret);
 			}
 		} else {
-			printk("join successful.\n");
+			printk("join successful\n");
 		}
 
 		dev_nonce++;
@@ -146,7 +147,7 @@ int main(void)
 
 		if (ret < 0) {
 			// If failed, wait before re-trying.
-			k_sleep(K_MSEC(5000));
+			k_sleep(DELAY);
 		}
 	} while (ret != 0);	
 #endif
@@ -156,7 +157,9 @@ int main(void)
 		ret = lorawan_join(&join_cfg);
 		if (ret < 0) {
 			printk("join network failed. error: %d\n", ret);
-			k_sleep(K_MSEC(5000));
+			k_sleep(DELAY);
+		} else {
+			printk("join successful\n");
 		}
 	} while (ret != 0)	;
 #endif
@@ -189,13 +192,12 @@ int main(void)
 			printk("lorawan_send failed: %d. continuing...\n", ret);
 			k_sleep(DELAY);
 			continue;
+		} else if (ret < 0) {
+			printk("lorawan_send failed: %d. continuing...\n", ret);
+			k_sleep(DELAY);
+			continue;
 		}
-
-		if (ret < 0) {
-			printk("lorawan_send failed: %d\n", ret);
-		}
-
-		printk("data sent!\n");
+		printk("data sent !\n");
 		k_sleep(DELAY);
 	}
 	return 0;
