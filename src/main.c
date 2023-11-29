@@ -44,11 +44,20 @@ int main(void)
 	struct lorawan_join_config join_cfg;
 	uint16_t dev_nonce = 0u;
 	uint32_t random = 0;
-
+	
+#ifdef OTAA
 	uint8_t dev_eui[] = LORAWAN_DEV_EUI;
 	uint8_t join_eui[] = LORAWAN_JOIN_EUI;
 	uint8_t app_key[] = LORAWAN_APP_KEY;
-	
+#endif
+
+#ifdef ABP
+    uint8_t dev_addr[] = LORAWAN_DEV_ADDR;
+    uint8_t nwk_skey[] = LORAWAN_NWK_SKEY;
+    uint8_t app_skey[] = LORAWAN_APP_SKEY;
+    uint8_t app_eui[]  = LORAWAN_APP_EUI;
+#endif
+
 	uint32_t gps_time;
 	time_t unix_time;
 	struct tm timeinfo;
