@@ -11,10 +11,10 @@
 #include "app_lorawan.h"
 #include "app_nvs.h"
 
-#define MAX_DATA_LEN 	10
-#define OTAA
-#define DELAY K_MSEC(5000)
-
+#define 	DELAY 			K_MSEC(5000)
+#define 	MAX_DATA_LEN	10
+//#define 	OTAA
+#define		ABP
 char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};
 
 // downlink callback
@@ -195,7 +195,7 @@ int main(void)
 		} else if (ret < 0) {
 			printk("lorawan_send failed: %d. continuing...\n", ret);
 			k_sleep(DELAY);
-			continue;
+			return 0;;
 		}
 		printk("data sent !\n");
 		k_sleep(DELAY);
