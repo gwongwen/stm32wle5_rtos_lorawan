@@ -30,6 +30,6 @@ The following commands clean build folder, build and flash the sample:
 
 west build -t pristine
 
-west build -p always -b stm32wl_dw1000_iot_board applications/stm32wle5_rtos_lora
+west build -p always -b stm32wl_dw1000_iot_board applications/stm32wle5_rtos_lorawan
 
 west flash --runner stm32cubeprogrammer

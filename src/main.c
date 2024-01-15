@@ -13,8 +13,8 @@
 
 #define 	DELAY 			K_MSEC(5000)
 #define 	MAX_DATA_LEN	10
-//#define 	OTAA
-#define		ABP
+#define 	OTAA
+//#define		ABP
 char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};
 
 // downlink callback
