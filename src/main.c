@@ -17,9 +17,6 @@
 //#define		ABP
 char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};
 
-static const struct gpio_dt_spec led_tx = GPIO_DT_SPEC_GET(LED_TX, gpios);
-static const struct gpio_dt_spec led_rx = GPIO_DT_SPEC_GET(LED_RX, gpios);
-
 // downlink callback
 static void dl_callback(uint8_t port, bool data_pending, int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data)
 {
@@ -39,6 +36,9 @@ static void lorwan_datarate_changed(enum lorawan_datarate dr)
 	lorawan_get_payload_sizes(&unused, &max_size);
 	printk("new datarate: DR_%d, max payload: %d\n", dr, max_size);
 }
+
+static const struct gpio_dt_spec led_tx = GPIO_DT_SPEC_GET(LED_TX, gpios);
+static const struct gpio_dt_spec led_rx = GPIO_DT_SPEC_GET(LED_RX, gpios);
 
 int main(void)
 {
@@ -210,7 +210,7 @@ int main(void)
 			k_sleep(DELAY);
 			return 0;;
 		}
-		
+
 		ret = gpio_pin_toggle_dt(&led_tx);
 			if (ret < 0) {
 				return 0;

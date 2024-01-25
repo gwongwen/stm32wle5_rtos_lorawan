@@ -10,6 +10,7 @@
 
 #include <zephyr/device.h>
 #include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
 
 #include <zephyr/random/rand32.h>
 #include <zephyr/lorawan/lorawan.h>
