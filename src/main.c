@@ -17,6 +17,9 @@
 //#define		ABP
 char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};
 
+static const struct gpio_dt_spec led_tx = GPIO_DT_SPEC_GET(LED_TX, gpios);
+static const struct gpio_dt_spec led_rx = GPIO_DT_SPEC_GET(LED_RX, gpios);
+
 // downlink callback
 static void dl_callback(uint8_t port, bool data_pending, int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data)
 {
@@ -67,6 +70,16 @@ int main(void)
 	int ret = 0;
 	ssize_t err = 0;
 	int8_t itr = 1;
+
+	ret = gpio_pin_configure_dt(&led_tx, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		return 0;
+	}
+
+	ret = gpio_pin_configure_dt(&led_rx, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		return 0;
+	}
 
 	printk("Zephyr LoRaWAN Node Example. Board: %s\n", CONFIG_BOARD);
 
@@ -197,6 +210,11 @@ int main(void)
 			k_sleep(DELAY);
 			return 0;;
 		}
+		
+		ret = gpio_pin_toggle_dt(&led_tx);
+			if (ret < 0) {
+				return 0;
+			}
 		printk("data sent !\n");
 		k_sleep(DELAY);
 	}

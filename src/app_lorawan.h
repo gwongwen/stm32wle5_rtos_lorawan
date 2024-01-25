@@ -16,6 +16,11 @@
 
 #include <time.h>
 
+/* led control */
+#define LED_TX                  DT_ALIAS(led0)
+#define LED_RX                  DT_ALIAS(led1)
+
+
 /* customize based on network configuration */
 // OTAA
 #define LORAWAN_DEV_EUI			{ 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x06, 0x21, 0xA5 }
