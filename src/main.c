@@ -137,6 +137,11 @@ int main(void)
 	do {
 		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
 		ret = lorawan_join(&join_cfg);
+		ret = gpio_pin_toggle_dt(&led_rx);
+			if (ret < 0) {
+				return 0;
+			}
+
 		if (ret < 0) {
 			if ((ret =-ETIMEDOUT)) {
 				printk("timed-out waiting for response.\n");
@@ -168,6 +173,11 @@ int main(void)
 #ifdef ABP
 	do {
 		ret = lorawan_join(&join_cfg);
+		ret = gpio_pin_toggle_dt(&led_rx);
+			if (ret < 0) {
+				return 0;
+			}
+
 		if (ret < 0) {
 			printk("join network failed. error: %d\n", ret);
 			k_sleep(DELAY);
