@@ -22,7 +22,7 @@
 #define NVS_DEVNONCE_ID             0
 //#define NVS_CLEAR
 
-int app_nvs_init(struct nvs_fs *fs);
-int app_nvs_init_param(struct nvs_fs *fs, uint16_t id, void *data);
+int8_t app_nvs_init(struct nvs_fs *fs);
+int8_t app_nvs_init_param(struct nvs_fs *fs, uint16_t id, void *data);
 
 #endif /* APP_NVS__H */

@@ -7,10 +7,10 @@
 
 #include "app_nvs.h"
 
-int app_nvs_init(struct nvs_fs *fs)
+int8_t app_nvs_init(struct nvs_fs *fs)
 {
 	struct flash_pages_info info;
-	int ret;
+	int8_t ret;
 
 	fs->flash_device = NVS_PARTITION_DEVICE;
 	if (!device_is_ready(fs->flash_device)) {
@@ -49,9 +49,9 @@ int app_nvs_init(struct nvs_fs *fs)
 #endif
 }
 
-int app_nvs_init_param(struct nvs_fs *fs, uint16_t id, void *data)
+int8_t app_nvs_init_param(struct nvs_fs *fs, uint16_t id, void *data)
 {
-	int ret;
+	int8_t ret;
 
 	ret = nvs_read(fs, id, data, sizeof(data));
 	if (ret > 0) {

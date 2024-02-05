@@ -40,7 +40,7 @@ static void lorwan_datarate_changed(enum lorawan_datarate dr)
 static const struct gpio_dt_spec led_tx = GPIO_DT_SPEC_GET(LED_TX, gpios);
 static const struct gpio_dt_spec led_rx = GPIO_DT_SPEC_GET(LED_RX, gpios);
 
-int main(void)
+int8_t main(void)
 {
 	const struct device *lora_dev;
 	static struct nvs_fs fs;
