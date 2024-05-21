@@ -94,6 +94,7 @@ int8_t main(void)
 	}
 
 	printk("starting Lorawan stack\n");
+	ret = lorawan_set_region(LORAWAN_REGION_EU868);
 	ret = lorawan_start();
 	if (ret < 0) {
 		printk("lorawan_start failed. error: %d\n", ret);
@@ -149,7 +150,7 @@ int8_t main(void)
 				printk("join network failed. error: %d\n", ret);
 			}
 		} else {
-			printk("join successful\n");
+			printk("OTAA join successful\n");
 		}
 
 		dev_nonce++;
@@ -182,7 +183,7 @@ int8_t main(void)
 			printk("join network failed. error: %d\n", ret);
 			k_sleep(DELAY);
 		} else {
-			printk("join successful\n");
+			printk("ABP join successful\n");
 		}
 	} while (ret != 0)	;
 #endif
@@ -208,17 +209,25 @@ int8_t main(void)
 #endif
 
 	printk("sending data...\n");
-	for (itr = 0; itr < 10 ; itr++) {
+	//for (itr = 0; itr < 10 ; itr++) 
+	while (1) {
 		ret = lorawan_send(2, data_tx, sizeof(data_tx), LORAWAN_MSG_CONFIRMED);
 
 		if (ret == -EAGAIN) {
 			printk("lorawan_send failed: %d. continuing...\n", ret);
 			k_sleep(DELAY);
 			continue;
-		} else if (ret < 0) {
-			printk("lorawan_send failed: %d. continuing...\n", ret);
+		} /*else if (ret < 0) {
+			printk("lorawan_send failed. error: %d\n", ret);
+			return 0;
+		}
+		*/
+
+		if (ret < 0) {
+			printk("lorawan_send failed: %d\n", ret);
+			//return 0;
 			k_sleep(DELAY);
-			return 0;;
+			continue;
 		}
 
 		ret = gpio_pin_toggle_dt(&led_tx);
