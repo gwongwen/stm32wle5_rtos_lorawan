@@ -217,19 +217,11 @@ int8_t main(void)
 			printk("lorawan_send failed: %d. continuing...\n", ret);
 			k_sleep(DELAY);
 			continue;
-		} /*else if (ret < 0) {
+		} else if (ret < 0) {
 			printk("lorawan_send failed. error: %d\n", ret);
 			return 0;
 		}
-		*/
-
-		if (ret < 0) {
-			printk("lorawan_send failed: %d\n", ret);
-			//return 0;
-			k_sleep(DELAY);
-			continue;
-		}
-
+		
 		ret = gpio_pin_toggle_dt(&led_tx);
 			if (ret < 0) {
 				return 0;
