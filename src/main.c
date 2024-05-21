@@ -209,8 +209,7 @@ int8_t main(void)
 #endif
 
 	printk("sending data...\n");
-	//for (itr = 0; itr < 10 ; itr++) 
-	while (1) {
+	for (itr = 0; itr < 10 ; itr++) {
 		ret = lorawan_send(2, data_tx, sizeof(data_tx), LORAWAN_MSG_CONFIRMED);
 
 		if (ret == -EAGAIN) {
