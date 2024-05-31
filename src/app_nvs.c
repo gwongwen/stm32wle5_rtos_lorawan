@@ -7,6 +7,7 @@
 
 #include "app_nvs.h"
 
+//  ======== app_nvs_init ===============================================
 int8_t app_nvs_init(struct nvs_fs *fs)
 {
 	struct flash_pages_info info;
@@ -37,18 +38,9 @@ int8_t app_nvs_init(struct nvs_fs *fs)
 		printk("flash init failed. error: %d\n", ret);
 		return 0;
 	}
-
-#ifdef NVS_CLEAR
-	ret = nvs_clear(fs);
-	if (ret) {
-		printk("flash clear failed. error: %d\n", ret);
-		return;
-	} else {
-		printk("cleared NVS from flash\n");
-	}
-#endif
 }
 
+//  ======== app_nvs_init_param =========================================
 int8_t app_nvs_init_param(struct nvs_fs *fs, uint16_t id, void *data)
 {
 	int8_t ret;

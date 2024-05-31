@@ -5,16 +5,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <zephyr/device.h>
-#include <zephyr/kernel.h>
-
 #include "app_lorawan.h"
 #include "app_nvs.h"
 
+//  ======== defines ============================================
 #define 	DELAY 			K_MSEC(5000)
 #define 	MAX_DATA_LEN	10
 #define 	OTAA
 //#define		ABP
+
+//  ======== globals ============================================
 char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};
 
 // downlink callback
@@ -40,6 +40,7 @@ static void lorwan_datarate_changed(enum lorawan_datarate dr)
 static const struct gpio_dt_spec led_tx = GPIO_DT_SPEC_GET(LED_TX, gpios);
 static const struct gpio_dt_spec led_rx = GPIO_DT_SPEC_GET(LED_RX, gpios);
 
+//  ======== main ===============================================
 int8_t main(void)
 {
 	const struct device *lora_dev;
@@ -161,7 +162,7 @@ int8_t main(void)
 		// save value away in Non-Volatile Storage.
 		err = nvs_write(&fs, NVS_DEVNONCE_ID, &dev_nonce, sizeof(dev_nonce));
 		if (err < 0) {
-			printk("NVS: failed to write id %d (%d)\n", NVS_DEVNONCE_ID, err);
+			printk("NVS: failed to write id %d. error: %d\n", NVS_DEVNONCE_ID, err);
 		}
 
 		if (ret < 0) {
@@ -192,7 +193,7 @@ int8_t main(void)
 	lorawan_clock_sync_run();
 	ret = lorawan_clock_sync_get(&gps_time);
 		if (ret != 0) { 
-			printk("lorawan_clock_sync_get returned %d\n", ret);
+			printk("lorawan clock sync get failed. error: %d\n", ret);
 		} else {
 			/* 
 			 * The difference in time between UNIX (epoch Jan 1st 1970) and
