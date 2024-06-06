@@ -32,7 +32,7 @@ int8_t app_nvs_init(struct nvs_fs *fs)
 		return -EINVAL;
 	}
 
-	fs->sector_count = 2U;
+	fs->sector_count = 4U;
 	ret = nvs_mount(fs);
 	if (ret) {
 		printk("flash init failed. error: %d\n", ret);
