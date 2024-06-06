@@ -72,11 +72,13 @@ int8_t main(void)
 	ssize_t err = 0;
 	int8_t itr = 1;
 
+	// setup tx led at GPIO PC0
 	ret = gpio_pin_configure_dt(&led_tx, GPIO_OUTPUT_ACTIVE);
 	if (ret < 0) {
 		return 0;
 	}
 
+	// setup rx led at GPIO PC1
 	ret = gpio_pin_configure_dt(&led_rx, GPIO_OUTPUT_ACTIVE);
 	if (ret < 0) {
 		return 0;
@@ -84,6 +86,7 @@ int8_t main(void)
 
 	printk("Zephyr LoRaWAN Node Example. Board: %s\n", CONFIG_BOARD);
 
+	// initialization and reading/writing the devnonce parameter
 	app_nvs_init(&fs);
 	app_nvs_init_param(&fs, NVS_DEVNONCE_ID, &dev_nonce);
 	
@@ -112,9 +115,6 @@ int8_t main(void)
 	};
 	lorawan_register_downlink_callback(&downlink_cb);
 	lorawan_register_dr_changed_callback(lorwan_datarate_changed);
-
-	//random = sys_rand32_get();
-	//dev_nonce = random & 0x0000FFFF;
 
 #ifdef OTAA
 	join_cfg.mode = LORAWAN_ACT_OTAA;
@@ -155,8 +155,6 @@ int8_t main(void)
 		}
 
 		dev_nonce++;
-		//random = sys_rand32_get();
-		//dev_nonce = random & 0x0000FFFF;
 		join_cfg.otaa.dev_nonce = dev_nonce;
 
 		// save value away in Non-Volatile Storage.

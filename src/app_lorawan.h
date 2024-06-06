@@ -18,8 +18,8 @@
 
 //  ======== defines ==============================================
 /* led control */
-#define LED_TX                  DT_ALIAS(led0)
-#define LED_RX                  DT_ALIAS(led1)
+#define LED_TX                  DT_ALIAS(led0)      // declared in device tree 
+#define LED_RX                  DT_ALIAS(led1)      // declared in device tree 
 
 /* customize based on network configuration */
 // OTAA
