@@ -1,4 +1,4 @@
-# Code for 6sens Omnitilt Project : test LoRaWAN sample application
+# Code for Sastress Project : test LoRaWAN sample application
 
 ## Overview
 This simple application allows us to demonstrate and validate the LoRaWAN subsystem Zephyr.
