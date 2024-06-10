@@ -25,7 +25,7 @@ static void dl_callback(uint8_t port, bool data_pending, int16_t rssi, int8_t sn
 		printk("%02X ", data[i]);
 	}
     printk("\n");
-	printk("port: %d, pending: %d, RSSI: %ddB, SNR: %dBm\n", port, data_pending, rssi, snr);
+	printk("port: %d, pending: %d, RSSI: %ddB, SNR: %ddBm\n", port, data_pending, rssi, snr);
 }
 
 // ADR change callback
@@ -48,7 +48,6 @@ int8_t main(void)
 	
 	struct lorawan_join_config join_cfg;
 	uint16_t dev_nonce = 0u;
-	uint32_t random = 0;
 
 #ifdef OTAA
 	uint8_t dev_eui[] 	= LORAWAN_DEV_EUI;
