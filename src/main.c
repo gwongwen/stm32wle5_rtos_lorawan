@@ -6,7 +6,8 @@
  */
 
 #include "app_lorawan.h"
-#include "app_nvs.h"
+#include "app_flash.h"
+#include "app_vbat.h"
 
 //  ======== defines ============================================
 #define 	DELAY 			K_MINUTES(5)
