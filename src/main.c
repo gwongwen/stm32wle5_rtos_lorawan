@@ -9,7 +9,7 @@
 #include "app_nvs.h"
 
 //  ======== defines ============================================
-#define 	DELAY 			K_MSEC(5000)
+#define 	DELAY 			K_MINUTES(5)
 #define 	MAX_DATA_LEN	10
 #define 	OTAA
 //#define		ABP
@@ -207,7 +207,8 @@ int8_t main(void)
 #endif
 
 	printk("sending data...\n");
-	for (itr = 0; itr < 10 ; itr++) {
+//	for (itr = 0; itr < 10 ; itr++) {
+	while (1) {
 		ret = lorawan_send(2, data_tx, sizeof(data_tx), LORAWAN_MSG_CONFIRMED);
 
 		if (ret == -EAGAIN) {
