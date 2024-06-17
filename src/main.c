@@ -91,8 +91,8 @@ int8_t main(void)
 	printk("Zephyr LoRaWAN Node Example. Board: %s\n", CONFIG_BOARD);
 
 	// initialization and reading/writing the devnonce parameter
-	app_nvs_init(&fs);
-	app_nvs_init_param(&fs, NVS_DEVNONCE_ID, &dev_nonce);
+	app_flash_init(&fs);
+	app_flash_init_param(&fs, NVS_DEVNONCE_ID, &dev_nonce);
 	
 	printk("starting Loarawan node\n");
 	lora_dev = DEVICE_DT_GET(DT_ALIAS(lora0));
@@ -143,6 +143,8 @@ int8_t main(void)
 	do {
 		printk("joining network using OTAA, dev nonce %d, attempt %d\n", join_cfg.otaa.dev_nonce, itr++);
 		ret = lorawan_join(&join_cfg);
+
+		// flashing of the LED when a packet is received
 		ret = gpio_pin_toggle_dt(&led_rx);
 			if (ret < 0) {
 				return 0;
@@ -168,7 +170,7 @@ int8_t main(void)
 		}
 
 		if (ret < 0) {
-			// If failed, wait before re-trying.
+			// if failed, wait before re-trying.
 			k_sleep(DELAY);
 		}
 	} while (ret != 0);	
@@ -177,6 +179,8 @@ int8_t main(void)
 #ifdef ABP
 	do {
 		ret = lorawan_join(&join_cfg);
+
+		// flashing of the LED when a packet is received
 		ret = gpio_pin_toggle_dt(&led_rx);
 			if (ret < 0) {
 				return 0;
@@ -212,11 +216,11 @@ int8_t main(void)
 #endif
 
 	// initialization of ADC device
-	app_stm32_vbat_init(dev);
+	app_stm32_vbat_init(bat_dev);
 
 	printk("sending data...\n");
-//	for (itr = 0; itr < 10 ; itr++) {
 	while (1) {
+		// transmission of packets to lorawan gateway
 		ret = lorawan_send(2, data_tx, sizeof(data_tx), LORAWAN_MSG_CONFIRMED);
 
 		if (ret == -EAGAIN) {
@@ -228,13 +232,14 @@ int8_t main(void)
 			return 0;
 		}
 		
+		// flashing of the LED when a packet is transmitted
 		ret = gpio_pin_toggle_dt(&led_tx);
 			if (ret < 0) {
 				return 0;
 			}
 		printk("data sent !\n");
 
-		vbat = app_stm32_get_vbat(dev);
+		vbat = app_stm32_get_vbat(bat_dev);
 		// writing data in the first page of 2kbytes
 		(void)nvs_write(&fs, NVS_BAT_ID, &vbat, sizeof(vbat));
 		

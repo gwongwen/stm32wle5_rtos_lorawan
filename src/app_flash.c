@@ -58,4 +58,18 @@ int8_t app_flash_init(struct nvs_fs *fs)
 	return 0;
 }
 
+//  ======== app_flash_init_param ===============================
+int8_t app_flash_init_param(struct nvs_fs *fs, uint16_t id, void *data)
+{
+	int8_t ret;
+
+	ret = nvs_read(fs, id, data, sizeof(data));
+	if (ret > 0) {
+		printk("ID: %d, address: %s\n", id, data);
+	} else {
+		printk("no address found, adding %s at id %d\n", data, id);
+		(void)nvs_write(fs, id, data, sizeof(data));	
+	}
+	return 0;
+}
 

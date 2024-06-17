@@ -1,0 +1,23 @@
+/*
+ * Copyright (c) 2023
+ * Regis Rousseau
+ * Univ Lyon, INSA Lyon, Inria, CITI, EA3720
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/* VBAT battery voltage monitoring */
+/* internal ADC channnel of STM32, Px14 - see datasheet ADC part pg 42/149 */
+/ {
+	stm32_vbat: stm32vbat {
+    	compatible = "st,stm32-vbat";
+    	io-channels = <&adc1 14>;
+    	ratio = <3>;
+    	status = "okay";
+	};
+};
+
+/* enable the corresponding ADC, with the correct vref value (in mV) */
+&adc1 {
+	vref-mv = <1100>;
+	status = "okay";
+};
