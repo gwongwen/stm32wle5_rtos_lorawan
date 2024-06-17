@@ -49,6 +49,10 @@ int8_t main(void)
 	struct lorawan_join_config join_cfg;
 	uint16_t dev_nonce = 0u;
 
+	const struct device *bat_dev;
+	uint16_t vbat;
+	uint32_t max_cnt = 0;
+
 #ifdef OTAA
 	uint8_t dev_eui[] 	= LORAWAN_DEV_EUI;
 	uint8_t join_eui[]	= LORAWAN_JOIN_EUI;
@@ -206,6 +210,9 @@ int8_t main(void)
 		}
 #endif
 
+	// initialization of ADC device
+	app_stm32_vbat_init(dev);
+
 	printk("sending data...\n");
 //	for (itr = 0; itr < 10 ; itr++) {
 	while (1) {
@@ -225,7 +232,24 @@ int8_t main(void)
 				return 0;
 			}
 		printk("data sent !\n");
+
+		vbat = app_stm32_get_vbat(dev);
+		// writing data in the first page of 2kbytes
+		(void)nvs_write(&fs, NVS_BAT_ID, &vbat, sizeof(vbat));
+		
+		max_cnt++;
+		// writing data in the first page of 2kbytes
+		(void)nvs_write(&fs, NVS_SENSOR_ID, &max_cnt, sizeof(max_cnt));
 		k_sleep(DELAY);
 	}
+	// reading the first page
+	ret = nvs_read(&fs, NVS_SENSOR_ID, &max_cnt, sizeof(max_cnt));
+	// printing data stored in memory
+	printk("max value of counter: %"PRIu32"\n",max_cnt);
+
+	// reading the first page
+	ret = nvs_read(&fs, NVS_BAT_ID, &vbat, sizeof(vbat));
+	// printing data stored in memory
+	printk("min value of battery: %"PRIu32"\n",vbat);
 	return 0;
 }
