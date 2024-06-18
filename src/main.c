@@ -13,7 +13,7 @@
 #define 	DELAY 			K_MINUTES(5)
 #define 	MAX_DATA_LEN	10
 #define 	OTAA
-//#define		ABP
+//#define	ABP
 
 //  ======== globals ============================================
 char data_tx[MAX_DATA_LEN] = {'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'};

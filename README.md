@@ -1,4 +1,4 @@
-# Code for Sastress Project : test LoRaWAN sample application
+# Code for 6Sens Project : test LoRaWAN sample application
 
 ## Overview
 This simple application allows us to demonstrate and validate the LoRaWAN subsystem Zephyr.
