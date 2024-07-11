@@ -239,9 +239,9 @@ int8_t main(void)
 			}
 		printk("data sent !\n");
 
-//		vbat = app_stm32_get_vbat(bat_dev);
+		vbat = app_stm32_get_vbat(bat_dev);
 		// writing data in the first page of 2kbytes
-//		(void)nvs_write(&fs, NVS_BAT_ID, &vbat, sizeof(vbat));
+		(void)nvs_write(&fs, NVS_BAT_ID, &vbat, sizeof(vbat));
 		
 		max_cnt++;
 		// writing data in the first page of 2kbytes
@@ -254,8 +254,8 @@ int8_t main(void)
 	printk("max value of counter: %"PRIu32"\n",max_cnt);
 
 	// reading the first page
-//	ret = nvs_read(&fs, NVS_BAT_ID, &vbat, sizeof(vbat));
+	ret = nvs_read(&fs, NVS_BAT_ID, &vbat, sizeof(vbat));
 	// printing data stored in memory
-//	printk("min value of battery: %"PRIu32"\n",vbat);
+	printk("min value of battery: %"PRIu32"\n",vbat);
 	return 0;
 }

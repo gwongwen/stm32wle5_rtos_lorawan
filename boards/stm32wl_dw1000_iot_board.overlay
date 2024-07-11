@@ -6,18 +6,21 @@
  */
 
 /* VBAT battery voltage monitoring */
-/* internal ADC channnel of STM32, Px14 - see datasheet ADC part pg 42/149 */
+/* external ADC channnel of STM32, IN5 - Port PB1 on schematic */
+/* ratio = 2 -> voltage-divider by 2 on schematic */
 / {
 	stm32_vbat: stm32vbat {
     	compatible = "st,stm32-vbat";
-    	io-channels = <&adc1 14>;
-    	ratio = <3>;
+    	io-channels = <&adc1 5>;
+   		ratio = <2>;
     	status = "okay";
 	};
 };
 
 /* enable the corresponding ADC, with the correct vref value (in mV) */
 &adc1 {
-	vref-mv = <1100>;
+	vref-channel = <13>;
+	vbat-channel = <5>;
+	vref-mv = <3300>;
 	status = "okay";
 };
